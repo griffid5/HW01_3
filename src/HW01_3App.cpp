@@ -60,8 +60,8 @@ void HW01_3App::prepareSettings(Settings* settings){
 	if(endx >= appWidth) endx = appWidth-1;
 	if(endy >= appHeight) endy = appHeight-1;
 
-	for (int y = 50; y <= endy; y++) {
-		for (int x = 50; x <= endx; x++) {
+	for (int y = 0; y <= endy; y++) {
+		for (int x = 0; x <= endx; x++) {
 			pixels[3*(x+y*surfaceSize)] = 50;
 			pixels[3*(x+y*surfaceSize)+1] = 150;
 			pixels[3*(x+y*surfaceSize)+2] = 200;

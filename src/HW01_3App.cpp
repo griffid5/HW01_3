@@ -46,7 +46,7 @@ class HW01_3App : public AppBasic {
 	void newRectangle(uint8_t* pixels, int x1, int y1, int x2, int y2);
 	void newCircle(uint8_t* pixels, int x, int y, int r);
 	void newTriangle(uint8_t* pixels, int p1, int p2, int sideLength); 
-	void newLineSegment(uint8_t* pixels, int x1, int x2, int lenght);
+	void newLineSegment(uint8_t* pixels, int x1, int y1, int lenght);
 };
 void HW01_3App::prepareSettings(Settings* settings){
 	(*settings).setWindowSize(appWidth,appHeight);
@@ -101,7 +101,6 @@ void HW01_3App::prepareSettings(Settings* settings){
 
 		if ((p1 <= appWidth) && ((p1 + sideLength) <= appWidth)) {
 
-
 			for (int i = 0; i <= sideLength; i++) {
 				pixels[3*(p1+p2*surfaceSize)] = 255;
 				pixels[3*(p1+p2*surfaceSize)+1] = 0;
@@ -130,15 +129,14 @@ void HW01_3App::prepareSettings(Settings* settings){
 		}
 	}
 
-	void HW01_3App :: newLineSegment(uint8_t* pixels, int x1, int x2, int length) {
+	void HW01_3App :: newLineSegment(uint8_t* pixels, int x1, int y1, int length) {
 
 		for (int i = 0; i <= length; i++) {
-			pixels[3*(x1+x2*surfaceSize)] = 255;
-			pixels[3*(x1+x2*surfaceSize)+1] = 0;
-			pixels[3*(x1+x2*surfaceSize)+2] = 255;
+			pixels[3*(x1+y1*surfaceSize)] = 0;
+			pixels[3*(x1+y1*surfaceSize)+1] = 0;
+			pixels[3*(x1+y1*surfaceSize)+2] = 0;
 		
 			x1 += 1;
-			x2 += 1;
 		}
 	}
 
@@ -160,9 +158,9 @@ void HW01_3App::update()
 	Color8u border2 = Color8u(255,255,255);
 
 	newRectangle(dataArray, 500, 300, 200, 300);
-	newCircle(dataArray, 100, 375, 75);
+	newCircle(dataArray, 125, 375, 75);
 	newTriangle(dataArray, 400, 450, 100);
-	newLineSegment(dataArray, 200, 255, 225);
+	newLineSegment(dataArray, 100, 450, 600);
 }
 
 void HW01_3App::draw()

@@ -9,7 +9,7 @@
  * give attribution. Commercial uses are allowed.
  *
  * @note The code fore creating Textures and Surfaces comes from, https://github.com/brinkmwj/CatPicture/blob/master/src/CatPictureApp.cpp
- * @note The code for creating the triangle, rectangle and circle come from Allyson Yoder, https://github.com/allysonyoder/CatPicture/commits/master
+ * @note The code for creating the rectangle and circle come from Allyson Yoder, https://github.com/allysonyoder/CatPicture/commits/master
  * it has been modified so I can creat the image I am trying to. 
  *
  * @note This project satisfies goals A.1 (rectangle), A.2 (circle), A.7 (triangle), B.1 (blur), E.2 (transparency),
@@ -39,13 +39,13 @@ class HW01_3App : public AppBasic {
 	Surface* mySurface_; //The Surface object whose pixel array we will modify
 	
 	//Width and height of the screen
-	static const int appWidth=800;
-	static const int appHeight=600;
+	static const int appWidth = 800;
+	static const int appHeight = 600;
 	static const int surfaceSize = 1024;
 
 	void newRectangle(uint8_t* pixels, int x1, int y1, int x2, int y2);
 	void newCircle(uint8_t* pixels, int x, int y, int r);
-	void newTriangle(uint8_t* pixels, int p1, int p2, int p3, int sideLength); 
+	void newTriangle(uint8_t* pixels, int p1, int p2, int sideLength); 
 	void newLineSegment(uint8_t* pixels, int x1, int x2, int lenght);
 };
 void HW01_3App::prepareSettings(Settings* settings){
@@ -97,52 +97,48 @@ void HW01_3App::prepareSettings(Settings* settings){
 		}
 	}
 
-	void HW01_3App :: newTriangle(uint8_t* pixels, int p1, int p2, int p3, int sideLength) {
+	void HW01_3App :: newTriangle(uint8_t* pixels, int p1, int p2, int sideLength) {
 
 		if ((p1 <= appWidth) && ((p1 + sideLength) <= appWidth)) {
 
-			int x = p1;
-			int y = p2;
 
 			for (int i = 0; i <= sideLength; i++) {
-				pixels[3*(x+y*surfaceSize)] = 255;
-				pixels[3*(x+y*surfaceSize)+1] = 0;
-				pixels[3*(x+y*surfaceSize)+2] = 0;
+				pixels[3*(p1+p2*surfaceSize)] = 255;
+				pixels[3*(p1+p2*surfaceSize)+1] = 0;
+				pixels[3*(p1+p2*surfaceSize)+2] = 0;
 
-				x += 1;
-				y += 1;
+				p1 += 1;
+				p2 += 1;
 			}
 
 			for (int i = 0; i <= sideLength*2; i++) {
-				pixels[3*(x+y*surfaceSize)] = 255;
-				pixels[3*(x+y*surfaceSize)+1] = 255;
-				pixels[3*(x+y*surfaceSize)+2] = 255;
+				pixels[3*(p1+p2*surfaceSize)] = 255;
+				pixels[3*(p1+p2*surfaceSize)+1] = 255;
+				pixels[3*(p1+p2*surfaceSize)+2] = 255;
 
-				x -= 1;
+				p1 -= 1;
 			}
 
 			for (int i = 0; i <= sideLength; i++) {
-				pixels[3*(x+y*surfaceSize)] = 0;
-				pixels[3*(x+y*surfaceSize)+1] = 0;
-				pixels[3*(x+y*surfaceSize)+2] = 255;
+				pixels[3*(p1+p2*surfaceSize)] = 0;
+				pixels[3*(p1+p2*surfaceSize)+1] = 0;
+				pixels[3*(p1+p2*surfaceSize)+2] = 255;
 
-				x += 1;
-				y -= 1;
+				p1 += 1;
+				p2 -= 1;
 			}
 		}
 	}
 
-	void newLineSegment(uint8_t* pixels, int x1, int x2, int length) {
-		int x = x1;
-		int y = x2;
+	void HW01_3App :: newLineSegment(uint8_t* pixels, int x1, int x2, int length) {
 
 		for (int i = 0; i <= length; i++) {
-			pixels[3*(x+y*surfaceSize)] = 255;
-			pixels[3*(x+y*surfaceSize)+1] = 0;
-			pixels[3*(x+y*surfaceSize)+2] = 255;
+			pixels[3*(x1+x2*surfaceSize)] = 255;
+			pixels[3*(x1+x2*surfaceSize)+1] = 0;
+			pixels[3*(x1+x2*surfaceSize)+2] = 255;
 		
-			x += 1;
-			y += 1;
+			x1 += 1;
+			x2 += 1;
 		}
 	}
 
@@ -165,11 +161,9 @@ void HW01_3App::update()
 
 	newRectangle(dataArray, 500, 300, 200, 300);
 	newCircle(dataArray, 100, 375, 75);
-	newTriangle(dataArray, 400, 450, 200, 100);
+	newTriangle(dataArray, 400, 450, 100);
 	newLineSegment(dataArray, 200, 255, 225);
 }
-	// End creative bits
-	//
 
 void HW01_3App::draw()
 {

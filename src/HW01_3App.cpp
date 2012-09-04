@@ -46,6 +46,7 @@ class HW01_3App : public AppBasic {
 	void newRectangle(uint8_t* pixels, int x1, int y1, int x2, int y2);
 	void newCircle(uint8_t* pixels, int x, int y, int r);
 	void newTriangle(uint8_t* pixels, int p1, int p2, int p3, int sideLength); 
+	void newLineSegment(uint8_t* pixels, int x1, int x2, int lenght);
 };
 void HW01_3App::prepareSettings(Settings* settings){
 	(*settings).setWindowSize(appWidth,appHeight);
@@ -131,6 +132,20 @@ void HW01_3App::prepareSettings(Settings* settings){
 		}
 	}
 
+	void newLineSegment(uint8_t* pixels, int x1, int x2, int length) {
+		int x = x1;
+		int y = x2;
+
+		for (int i = 0; i <= length; i++) {
+			pixels[3*(x+y*surfaceSize)] = 255;
+			pixels[3*(x+y*surfaceSize)+1] = 0;
+			pixels[3*(x+y*surfaceSize)+2] = 255;
+		
+			x += 1;
+			y += 1;
+		}
+	}
+
 	void HW01_3App :: setup() {
 		mySurface_ = new Surface(surfaceSize, surfaceSize, false);
 	}
@@ -151,6 +166,7 @@ void HW01_3App::update()
 	newRectangle(dataArray, 500, 300, 200, 300);
 	newCircle(dataArray, 100, 375, 75);
 	newTriangle(dataArray, 400, 450, 200, 100);
+	newLineSegment(dataArray, 200, 255, 225);
 }
 	// End creative bits
 	//

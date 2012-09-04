@@ -12,8 +12,8 @@
  * @note The code for creating the rectangle and circle come from Allyson Yoder, https://github.com/allysonyoder/CatPicture/commits/master
  * it has been modified so I can creat the image I am trying to. 
  *
- * @note This project satisfies goals A.1 (rectangle), A.2 (circle), A.7 (triangle), B.1 (blur), E.2 (transparency),
- * E.5 (animation) and E.6 (mouse interaction)
+ * @note This project satisfies goals A.1 (rectangle), A.2 (circle), A.3 (line). A.7 (triangle), 
+ * 
  */
 
 #include "cinder/app/AppBasic.h"
@@ -67,8 +67,8 @@ void HW01_3App::prepareSettings(Settings* settings){
 	if(endx >= appWidth) endx = appWidth-1;
 	if(endy >= appHeight) endy = appHeight-1;
 
-	for (int y = 200; y <= endy; y++) {
-		for (int x = 300; x <= endx; x++) {
+	for (int y = 300; y <= endy; y++) {
+		for (int x = 600; x <= endx; x++) {
 			pixels[3*(x+y*surfaceSize)] = 50;
 			pixels[3*(x+y*surfaceSize)+1] = 150;
 			pixels[3*(x+y*surfaceSize)+2] = 200;
@@ -157,7 +157,7 @@ void HW01_3App::update()
 	Color8u fill2 = Color8u(192,192,192);
 	Color8u border2 = Color8u(255,255,255);
 
-	newRectangle(dataArray, 500, 300, 200, 300);
+	newRectangle(dataArray, 400, 450, 700, 450);
 	newCircle(dataArray, 125, 375, 75);
 	newTriangle(dataArray, 400, 450, 100);
 	newLineSegment(dataArray, 100, 450, 600);

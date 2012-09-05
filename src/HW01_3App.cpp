@@ -9,10 +9,10 @@
  * give attribution. Commercial uses are allowed.
  *
  * @note The code for creating Textures and Surfaces comes from, https://github.com/brinkmwj/CatPicture/blob/master/src/CatPictureApp.cpp
- * @note The code for creating the rectangle and circle come from Allyson Yoder, https://github.com/allysonyoder/CatPicture/commits/master
- * it has been modified so I can creat the image I am trying to. 
+ * @note The code for creating the rectangle and circle come from Allyson Yoder, https://github.com/allysonyoder/CatPicture/commits/master 
  *
- * @note This project satisfies goals A.1 (rectangle), A.2 (circle), A.3 (line). A.7 (triangle), C, D.
+ * @note This project satisfies goals A.1 (rectangle), A.2 (circle), A.3 (line). A.7 (triangle), C, D,
+ * E.4 (red/blue colors)
  * 
  */
 
@@ -44,6 +44,7 @@ class HW01_3App : public AppBasic {
 	static const int surfaceSize = 1024;
 
 	// Call the consturctors
+
 	// Satisfies goal (A.1)
 	void newRectangle(uint8_t* pixels, int x1, int y1, int x2, int y2);
 	
@@ -71,6 +72,7 @@ class HW01_3App : public AppBasic {
 	* @param y2 a second y coordinate
 	*/
 	void HW01_3App :: newRectangle(uint8_t* pixels, int x1, int y1, int x2, int y2) {
+	
 	//Figure out the starting and ending coordinates of the rectangle to fill
 	int startx = (x1 < x2) ? x1 : x2;
 	int endx = (x1 < x2) ? x2 : x1;
@@ -85,9 +87,9 @@ class HW01_3App : public AppBasic {
 
 	for (int y = 300; y <= endy; y++) {
 		for (int x = 600; x <= endx; x++) {
-			pixels[3*(x+y*surfaceSize)] = 50;
-			pixels[3*(x+y*surfaceSize)+1] = 150;
-			pixels[3*(x+y*surfaceSize)+2] = 200;
+			pixels[3*(x+y*surfaceSize)] = 0;
+			pixels[3*(x+y*surfaceSize)+1] = 0;
+			pixels[3*(x+y*surfaceSize)+2] = 255;
 		}
 	}
 	}
@@ -112,8 +114,8 @@ class HW01_3App : public AppBasic {
 				if (newR <= r) {
 					int offset = 3*(newX+newY*surfaceSize);
 			pixels[offset] = 255;
-			pixels[offset+1] = 255;
-			pixels[offset+2] = 255;
+			pixels[offset+1] = 0;
+			pixels[offset+2] = 0;
 				}
 			}
 		}
@@ -168,7 +170,7 @@ class HW01_3App : public AppBasic {
 	void HW01_3App :: newLineSegment(uint8_t* pixels, int x1, int y1, int length) {
 
 		for (int i = 0; i <= length; i++) {
-			pixels[3*(x1+y1*surfaceSize)] = 0;
+			pixels[3*(x1+y1*surfaceSize)] = 255;
 			pixels[3*(x1+y1*surfaceSize)+1] = 0;
 			pixels[3*(x1+y1*surfaceSize)+2] = 0;
 		
@@ -188,7 +190,6 @@ void HW01_3App::update()
 	uint8_t* dataArray = (*mySurface_).getData();
 
 	// Creative bits go here
-	
 	Color8u fill1 = Color8u(128,128,192);
 	Color8u border1 = Color8u(192,192,255);
 	Color8u fill2 = Color8u(192,192,192);

@@ -8,11 +8,11 @@
  * which means you are free to use, share, and remix it as long as you
  * give attribution. Commercial uses are allowed.
  *
- * @note The code fore creating Textures and Surfaces comes from, https://github.com/brinkmwj/CatPicture/blob/master/src/CatPictureApp.cpp
+ * @note The code for creating Textures and Surfaces comes from, https://github.com/brinkmwj/CatPicture/blob/master/src/CatPictureApp.cpp
  * @note The code for creating the rectangle and circle come from Allyson Yoder, https://github.com/allysonyoder/CatPicture/commits/master
  * it has been modified so I can creat the image I am trying to. 
  *
- * @note This project satisfies goals A.1 (rectangle), A.2 (circle), A.3 (line). A.7 (triangle), 
+ * @note This project satisfies goals A.1 (rectangle), A.2 (circle), A.3 (line). A.7 (triangle), C, D.
  * 
  */
 
@@ -43,17 +43,33 @@ class HW01_3App : public AppBasic {
 	static const int appHeight = 600;
 	static const int surfaceSize = 1024;
 
+	// Call the consturctors
+	// Satisfies goal (A.1)
 	void newRectangle(uint8_t* pixels, int x1, int y1, int x2, int y2);
+	
+	// Satisfies goal (A.2)
 	void newCircle(uint8_t* pixels, int x, int y, int r);
+
+	// Satisfies goal (A.7)
 	void newTriangle(uint8_t* pixels, int p1, int p2, int sideLength); 
+
+	// Satisfies goal (A.3)
 	void newLineSegment(uint8_t* pixels, int x1, int y1, int lenght);
 };
-void HW01_3App::prepareSettings(Settings* settings){
+	// Setting my default settings.
+	void HW01_3App::prepareSettings(Settings* settings){
 	(*settings).setWindowSize(appWidth,appHeight);
 	(*settings).setResizable(false);
 }
 
-
+	/** 
+	* Constructs a new rectangle 
+	* @param pixels the pixels of the image
+	* @param x1 a x coordinate
+	* @param y1 a y coordinate
+	* @param x2 a second x coordinate
+	* @param y2 a second y coordinate
+	*/
 	void HW01_3App :: newRectangle(uint8_t* pixels, int x1, int y1, int x2, int y2) {
 	//Figure out the starting and ending coordinates of the rectangle to fill
 	int startx = (x1 < x2) ? x1 : x2;
@@ -76,7 +92,13 @@ void HW01_3App::prepareSettings(Settings* settings){
 	}
 	}
 	
-
+	/**
+	* Constructs a new circle
+	* @param pixels the pixels of the image
+	* @param x a x coordinate
+	* @param y a y coordinate
+	* @param r a radius
+	*/
 	void HW01_3App :: newCircle(uint8_t* pixels, int x, int y, int r) {
 
 		if (r <= 0) return;
@@ -97,6 +119,13 @@ void HW01_3App::prepareSettings(Settings* settings){
 		}
 	}
 
+	/** 
+	* Constructs a new triangle
+	* @param pixels the pixels of the image
+	* @param p1 a point (x, y) 
+	* @param p2 a second point (x, y) 
+	* @param sideLength the length of the triangle's sides
+	*/
 	void HW01_3App :: newTriangle(uint8_t* pixels, int p1, int p2, int sideLength) {
 
 		if ((p1 <= appWidth) && ((p1 + sideLength) <= appWidth)) {
@@ -129,6 +158,13 @@ void HW01_3App::prepareSettings(Settings* settings){
 		}
 	}
 
+	/**
+	* Constructs a new line segment 
+	* @param pixels the pixels of the image
+	* @param x1 the x coordinate of the line segment
+	* @param y1 the y coordinate of the line segment
+	* @param length the lenght of the line segment
+	*/
 	void HW01_3App :: newLineSegment(uint8_t* pixels, int x1, int y1, int length) {
 
 		for (int i = 0; i <= length; i++) {
@@ -140,6 +176,7 @@ void HW01_3App::prepareSettings(Settings* settings){
 		}
 	}
 
+	// The default setup
 	void HW01_3App :: setup() {
 		mySurface_ = new Surface(surfaceSize, surfaceSize, false);
 	}
@@ -157,12 +194,14 @@ void HW01_3App::update()
 	Color8u fill2 = Color8u(192,192,192);
 	Color8u border2 = Color8u(255,255,255);
 
+	// Update our constructors with the given information, Satisfies goal (C).
 	newRectangle(dataArray, 400, 450, 700, 450);
 	newCircle(dataArray, 125, 375, 75);
 	newTriangle(dataArray, 400, 450, 100);
 	newLineSegment(dataArray, 100, 450, 600);
 }
 
+// Draw the images to the screen
 void HW01_3App::draw()
 {
 	

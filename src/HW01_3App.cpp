@@ -38,6 +38,10 @@ class HW01_3App : public AppBasic {
 	  
 	Surface* mySurface_; //The Surface object whose pixel array we will modify
 	
+	
+	/*
+		JO: Have class variables end in '_' to adhere to variable naming conventions, plus it makes them stand out when looking at code
+	*/
 	//Width and height of the screen
 	static const int appWidth = 800;
 	static const int appHeight = 600;
@@ -59,9 +63,9 @@ class HW01_3App : public AppBasic {
 };
 	// Setting my default settings.
 	void HW01_3App::prepareSettings(Settings* settings){
-	(*settings).setWindowSize(appWidth,appHeight);
-	(*settings).setResizable(false);
-}
+		(*settings).setWindowSize(appWidth,appHeight);
+		(*settings).setResizable(false);
+	}
 
 	/** 
 	* Constructs a new rectangle 
@@ -72,26 +76,36 @@ class HW01_3App : public AppBasic {
 	* @param y2 a second y coordinate
 	*/
 	void HW01_3App :: newRectangle(uint8_t* pixels, int x1, int y1, int x2, int y2) {
-	
-	//Figure out the starting and ending coordinates of the rectangle to fill
-	int startx = (x1 < x2) ? x1 : x2;
-	int endx = (x1 < x2) ? x2 : x1;
-	int starty = (y1 < y2) ? y1 : y2;
-	int endy = (y1 < y2) ? y2 : y1;
-	
-	//Do some bounds checking
-	if(starty >= appHeight) return;
-	if(startx >= appWidth) return;
-	if(endx >= appWidth) endx = appWidth-1;
-	if(endy >= appHeight) endy = appHeight-1;
+		/*
+			JO: Rectangle method seems to choke on smaller sized rectangles, only displaying a pixel wide line as the width
+			Sometimes draws nothing
+		*/
 
-	for (int y = 300; y <= endy; y++) {
-		for (int x = 600; x <= endx; x++) {
-			pixels[3*(x+y*surfaceSize)] = 0;
-			pixels[3*(x+y*surfaceSize)+1] = 0;
-			pixels[3*(x+y*surfaceSize)+2] = 255;
+		//Figure out the starting and ending coordinates of the rectangle to fill
+		int startx = (x1 < x2) ? x1 : x2;
+		int endx = (x1 < x2) ? x2 : x1;
+		int starty = (y1 < y2) ? y1 : y2;
+		int endy = (y1 < y2) ? y2 : y1;
+	
+		//Do some bounds checking
+		if(starty >= appHeight) return;
+		if(startx >= appWidth) return;
+		if(endx >= appWidth) endx = appWidth-1;
+		if(endy >= appHeight) endy = appHeight-1;
+
+		/*
+			JO: Why y=300, x=600? This seems to limit where you can draw the rectangle
+		*/
+		for (int y = 300; y <= endy; y++) {
+			for (int x = 600; x <= endx; x++) {
+				/*
+					JO: RGB values are magic numbers, could include a Color8u as a param and get the color from there
+				*/
+				pixels[3*(x+y*surfaceSize)] = 200;
+				pixels[3*(x+y*surfaceSize)+1] = 100;
+				pixels[3*(x+y*surfaceSize)+2] = 255;
+			}
 		}
-	}
 	}
 	
 	/**
@@ -104,18 +118,27 @@ class HW01_3App : public AppBasic {
 	void HW01_3App :: newCircle(uint8_t* pixels, int x, int y, int r) {
 
 		if (r <= 0) return;
-
+		/*
+			JO: Create variables outside of loop to speed up each iteration
+		*/
+		int newR;
+		int offset;
 		for (int newY = y-r; newY <= y+r; newY++) {
-			for (int newX = x-r; newX <= x+r; newX++) {
-				//Check bounds
-				if (newY < 0 || newX < 0 || newY >= appHeight || newX >= appWidth) continue;
-
-				int newR = (int)sqrt((double)((newX-x)*(newX-x) + (newY - y)*(newY - y)));
+			for (int newX = x-r; newX <= x+r; newX++) {	
+				newR = (int)sqrt((double)((newX-x)*(newX-x) + (newY - y)*(newY - y)));
 				if (newR <= r) {
-					int offset = 3*(newX+newY*surfaceSize);
-			pixels[offset] = 255;
-			pixels[offset+1] = 0;
-			pixels[offset+2] = 0;
+					/*
+						JO: Check for bounds after checking radius, not sure how much this actually matters
+					*/
+					//Check bounds
+					if (newY < 0 || newX < 0 || newY >= appHeight || newX >= appWidth) continue;
+					offset = 3*(newX+newY*surfaceSize);
+					/*
+						JO: RGB values are magic numbers, could include a Color8u as a param and get the color from there
+					*/
+					pixels[offset] = 255;
+					pixels[offset+1] = 0;
+					pixels[offset+2] = 0;
 				}
 			}
 		}
@@ -129,7 +152,9 @@ class HW01_3App : public AppBasic {
 	* @param sideLength the length of the triangle's sides
 	*/
 	void HW01_3App :: newTriangle(uint8_t* pixels, int p1, int p2, int sideLength) {
-
+		/*
+			JO: RGB values are magic numbers, could include a Color8u as a param and get the color from there
+		*/
 		if ((p1 <= appWidth) && ((p1 + sideLength) <= appWidth)) {
 
 			for (int i = 0; i <= sideLength; i++) {
@@ -168,7 +193,12 @@ class HW01_3App : public AppBasic {
 	* @param length the lenght of the line segment
 	*/
 	void HW01_3App :: newLineSegment(uint8_t* pixels, int x1, int y1, int length) {
+		/*
+			JO: Line segment can only be horizontal, no vertical or diagonal
+			Use Bresenham's line algorithm to better implement this method
 
+			RGB values are magic numbers, could include a Color8u as a param and get the color from there
+		*/
 		for (int i = 0; i <= length; i++) {
 			pixels[3*(x1+y1*surfaceSize)] = 255;
 			pixels[3*(x1+y1*surfaceSize)+1] = 0;
@@ -186,9 +216,13 @@ class HW01_3App : public AppBasic {
 
 void HW01_3App::update()
 {
-	//Get our array of pixel information
+	// Get our array of pixel information
 	uint8_t* dataArray = (*mySurface_).getData();
 
+	
+	/*
+		JO: What are these colors used for?
+	*/
 	// Creative bits go here
 	Color8u fill1 = Color8u(128,128,192);
 	Color8u border1 = Color8u(192,192,255);
@@ -197,15 +231,14 @@ void HW01_3App::update()
 
 	// Update our constructors with the given information, Satisfies goal (C).
 	newRectangle(dataArray, 400, 450, 700, 450);
-	newCircle(dataArray, 125, 375, 75);
-	newTriangle(dataArray, 400, 450, 100);
+	newCircle(dataArray, 100, 475, 50);
+	newTriangle(dataArray, 300, 450, 20);
 	newLineSegment(dataArray, 100, 450, 600);
 }
 
 // Draw the images to the screen
 void HW01_3App::draw()
 {
-	
 	//Draw our texture to the screen, using graphics library
 	gl::draw(*mySurface_);
 }
